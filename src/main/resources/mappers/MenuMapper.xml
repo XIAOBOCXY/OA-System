@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.MenuMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	menu_id,	menu_name,	menu_href_url,	menu_parent_id,	menu_create_time
+	</sql>
+
+	<resultMap type="Menu" id="baseMap">
+		<result column="menu_id" property="menuId"/>
+		<result column="menu_name" property="menuName"/>
+		<result column="menu_href_url" property="menuHrefUrl"/>
+		<result column="menu_parent_id" property="menuParentId"/>
+		<result column="menu_create_time" property="menuCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+		 WHERE menu_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllMenus" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectMenusCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectMenusPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectMenuCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_menu
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectMenusCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_menu
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectMenusByCondition" resultType="Menu" parameterType="Menu">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+		 <where> 
+			<if test="menuId != null">
+				 and  menu_id = #{menuId}
+			</if>
+			<if test="menuName != null">
+				 and  menu_name = #{menuName}
+			</if>
+			<if test="menuHrefUrl != null">
+				 and  menu_href_url = #{menuHrefUrl}
+			</if>
+			<if test="menuParentId != null">
+				 and  menu_parent_id = #{menuParentId}
+			</if>
+			<if test="menuCreateTime != null">
+				 and  menu_create_time = #{menuCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_menu
+		 WHERE menu_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Menu">
+		 DELETE FROM t_menu
+		 <where> 
+			<if test="menuId != null">
+				 and  menu_id = #{menuId}
+			</if>
+			<if test="menuName != null">
+				 and  menu_name = #{menuName}
+			</if>
+			<if test="menuHrefUrl != null">
+				 and  menu_href_url = #{menuHrefUrl}
+			</if>
+			<if test="menuParentId != null">
+				 and  menu_parent_id = #{menuParentId}
+			</if>
+			<if test="menuCreateTime != null">
+				 and  menu_create_time = #{menuCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Menu">
+		 INSERT INTO t_menu
+ 		(menu_id,menu_name,menu_href_url,menu_parent_id,menu_create_time) 
+		 VALUES 
+ 		(#{menuId},#{menuName},#{menuHrefUrl},#{menuParentId},#{menuCreateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Menu">
+		 INSERT INTO t_menu
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="menuId != null">
+				 menu_id,
+			</if>
+			<if test="menuName != null">
+				 menu_name,
+			</if>
+			<if test="menuHrefUrl != null">
+				 menu_href_url,
+			</if>
+			<if test="menuParentId != null">
+				 menu_parent_id,
+			</if>
+			<if test="menuCreateTime != null">
+				 menu_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="menuId!=null">
+				 #{menuId},
+			</if>
+			<if test="menuName!=null">
+				 #{menuName},
+			</if>
+			<if test="menuHrefUrl!=null">
+				 #{menuHrefUrl},
+			</if>
+			<if test="menuParentId!=null">
+				 #{menuParentId},
+			</if>
+			<if test="menuCreateTime!=null">
+				 #{menuCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Menu">
+		 UPDATE t_menu
+ 		 <set> 
+			<if test="menuName != null">
+				 menu_name = #{menuName},
+			</if>
+			<if test="menuHrefUrl != null">
+				 menu_href_url = #{menuHrefUrl},
+			</if>
+			<if test="menuParentId != null">
+				 menu_parent_id = #{menuParentId},
+			</if>
+			<if test="menuCreateTime != null">
+				 menu_create_time = #{menuCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE menu_id = #{menuId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Menu">
+		 UPDATE t_menu
+		 SET 
+			 menu_name = #{menuName},
+			 menu_href_url = #{menuHrefUrl},
+			 menu_parent_id = #{menuParentId},
+			 menu_create_time = #{menuCreateTime}
+		 WHERE menu_id = #{menuId}
+	</update>
+
+</mapper>

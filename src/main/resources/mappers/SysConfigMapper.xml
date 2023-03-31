@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.SysConfigMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	config_id,	config_type,	config_key,	config_page_value,	config_create_time
+	</sql>
+
+	<resultMap type="SysConfig" id="baseMap">
+		<result column="config_id" property="configId"/>
+		<result column="config_type" property="configType"/>
+		<result column="config_key" property="configKey"/>
+		<result column="config_page_value" property="configPageValue"/>
+		<result column="config_create_time" property="configCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_sys_config
+		 WHERE config_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllSysConfigs" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_sys_config
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectSysConfigsCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_sys_config
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectSysConfigsPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_sys_config
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectSysConfigCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_sys_config
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectSysConfigsCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_sys_config
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectSysConfigsByCondition" resultType="SysConfig" parameterType="SysConfig">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_sys_config
+		 <where> 
+			<if test="configId != null">
+				 and  config_id = #{configId}
+			</if>
+			<if test="configType != null">
+				 and  config_type = #{configType}
+			</if>
+			<if test="configKey != null">
+				 and  config_key = #{configKey}
+			</if>
+			<if test="configPageValue != null">
+				 and  config_page_value = #{configPageValue}
+			</if>
+			<if test="configCreateTime != null">
+				 and  config_create_time = #{configCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_sys_config
+		 WHERE config_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="SysConfig">
+		 DELETE FROM t_sys_config
+		 <where> 
+			<if test="configId != null">
+				 and  config_id = #{configId}
+			</if>
+			<if test="configType != null">
+				 and  config_type = #{configType}
+			</if>
+			<if test="configKey != null">
+				 and  config_key = #{configKey}
+			</if>
+			<if test="configPageValue != null">
+				 and  config_page_value = #{configPageValue}
+			</if>
+			<if test="configCreateTime != null">
+				 and  config_create_time = #{configCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="SysConfig">
+		 INSERT INTO t_sys_config
+ 		(config_id,config_type,config_key,config_page_value,config_create_time) 
+		 VALUES 
+ 		(#{configId},#{configType},#{configKey},#{configPageValue},#{configCreateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="SysConfig">
+		 INSERT INTO t_sys_config
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="configId != null">
+				 config_id,
+			</if>
+			<if test="configType != null">
+				 config_type,
+			</if>
+			<if test="configKey != null">
+				 config_key,
+			</if>
+			<if test="configPageValue != null">
+				 config_page_value,
+			</if>
+			<if test="configCreateTime != null">
+				 config_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="configId!=null">
+				 #{configId},
+			</if>
+			<if test="configType!=null">
+				 #{configType},
+			</if>
+			<if test="configKey!=null">
+				 #{configKey},
+			</if>
+			<if test="configPageValue!=null">
+				 #{configPageValue},
+			</if>
+			<if test="configCreateTime!=null">
+				 #{configCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="SysConfig">
+		 UPDATE t_sys_config
+ 		 <set> 
+			<if test="configType != null">
+				 config_type = #{configType},
+			</if>
+			<if test="configKey != null">
+				 config_key = #{configKey},
+			</if>
+			<if test="configPageValue != null">
+				 config_page_value = #{configPageValue},
+			</if>
+			<if test="configCreateTime != null">
+				 config_create_time = #{configCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE config_id = #{configId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="SysConfig">
+		 UPDATE t_sys_config
+		 SET 
+			 config_type = #{configType},
+			 config_key = #{configKey},
+			 config_page_value = #{configPageValue},
+			 config_create_time = #{configCreateTime}
+		 WHERE config_id = #{configId}
+	</update>
+
+</mapper>

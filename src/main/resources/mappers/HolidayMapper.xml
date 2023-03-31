@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.HolidayMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	holiday_id,	holiday_no,	holiday_user_id,	holiday_type_id,	holiday_bz,	holiday_start_time,	holiday_end_time,	holiday_holiday_status,	holiday_shenpi_user_id,	holiday_create_time,	holiday_update_time
+	</sql>
+
+	<resultMap type="Holiday" id="baseMap">
+		<result column="holiday_id" property="holidayId"/>
+		<result column="holiday_no" property="holidayNo"/>
+		<result column="holiday_user_id" property="holidayUserId"/>
+		<result column="holiday_type_id" property="holidayTypeId"/>
+		<result column="holiday_bz" property="holidayBz"/>
+		<result column="holiday_start_time" property="holidayStartTime"/>
+		<result column="holiday_end_time" property="holidayEndTime"/>
+		<result column="holiday_holiday_status" property="holidayHolidayStatus"/>
+		<result column="holiday_shenpi_user_id" property="holidayShenpiUserId"/>
+		<result column="holiday_create_time" property="holidayCreateTime"/>
+		<result column="holiday_update_time" property="holidayUpdateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_holiday
+		 WHERE holiday_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllHolidays" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_holiday
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectHolidaysCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_holiday
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectHolidaysPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_holiday
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectHolidayCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_holiday
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectHolidaysCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_holiday
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectHolidaysByCondition" resultType="Holiday" parameterType="Holiday">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_holiday
+		 <where> 
+			<if test="holidayId != null">
+				 and  holiday_id = #{holidayId}
+			</if>
+			<if test="holidayNo != null">
+				 and  holiday_no = #{holidayNo}
+			</if>
+			<if test="holidayUserId != null">
+				 and  holiday_user_id = #{holidayUserId}
+			</if>
+			<if test="holidayTypeId != null">
+				 and  holiday_type_id = #{holidayTypeId}
+			</if>
+			<if test="holidayBz != null">
+				 and  holiday_bz = #{holidayBz}
+			</if>
+			<if test="holidayStartTime != null">
+				 and  holiday_start_time = #{holidayStartTime}
+			</if>
+			<if test="holidayEndTime != null">
+				 and  holiday_end_time = #{holidayEndTime}
+			</if>
+			<if test="holidayHolidayStatus != null">
+				 and  holiday_holiday_status = #{holidayHolidayStatus}
+			</if>
+			<if test="holidayShenpiUserId != null">
+				 and  holiday_shenpi_user_id = #{holidayShenpiUserId}
+			</if>
+			<if test="holidayCreateTime != null">
+				 and  holiday_create_time = #{holidayCreateTime}
+			</if>
+			<if test="holidayUpdateTime != null">
+				 and  holiday_update_time = #{holidayUpdateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_holiday
+		 WHERE holiday_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Holiday">
+		 DELETE FROM t_holiday
+		 <where> 
+			<if test="holidayId != null">
+				 and  holiday_id = #{holidayId}
+			</if>
+			<if test="holidayNo != null">
+				 and  holiday_no = #{holidayNo}
+			</if>
+			<if test="holidayUserId != null">
+				 and  holiday_user_id = #{holidayUserId}
+			</if>
+			<if test="holidayTypeId != null">
+				 and  holiday_type_id = #{holidayTypeId}
+			</if>
+			<if test="holidayBz != null">
+				 and  holiday_bz = #{holidayBz}
+			</if>
+			<if test="holidayStartTime != null">
+				 and  holiday_start_time = #{holidayStartTime}
+			</if>
+			<if test="holidayEndTime != null">
+				 and  holiday_end_time = #{holidayEndTime}
+			</if>
+			<if test="holidayHolidayStatus != null">
+				 and  holiday_holiday_status = #{holidayHolidayStatus}
+			</if>
+			<if test="holidayShenpiUserId != null">
+				 and  holiday_shenpi_user_id = #{holidayShenpiUserId}
+			</if>
+			<if test="holidayCreateTime != null">
+				 and  holiday_create_time = #{holidayCreateTime}
+			</if>
+			<if test="holidayUpdateTime != null">
+				 and  holiday_update_time = #{holidayUpdateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Holiday">
+		 INSERT INTO t_holiday
+ 		(holiday_id,holiday_no,holiday_user_id,holiday_type_id,holiday_bz,holiday_start_time,holiday_end_time,holiday_holiday_status,holiday_shenpi_user_id,holiday_create_time,holiday_update_time) 
+		 VALUES 
+ 		(#{holidayId},#{holidayNo},#{holidayUserId},#{holidayTypeId},#{holidayBz},#{holidayStartTime},#{holidayEndTime},#{holidayHolidayStatus},#{holidayShenpiUserId},#{holidayCreateTime},#{holidayUpdateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Holiday">
+		 INSERT INTO t_holiday
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="holidayId != null">
+				 holiday_id,
+			</if>
+			<if test="holidayNo != null">
+				 holiday_no,
+			</if>
+			<if test="holidayUserId != null">
+				 holiday_user_id,
+			</if>
+			<if test="holidayTypeId != null">
+				 holiday_type_id,
+			</if>
+			<if test="holidayBz != null">
+				 holiday_bz,
+			</if>
+			<if test="holidayStartTime != null">
+				 holiday_start_time,
+			</if>
+			<if test="holidayEndTime != null">
+				 holiday_end_time,
+			</if>
+			<if test="holidayHolidayStatus != null">
+				 holiday_holiday_status,
+			</if>
+			<if test="holidayShenpiUserId != null">
+				 holiday_shenpi_user_id,
+			</if>
+			<if test="holidayCreateTime != null">
+				 holiday_create_time,
+			</if>
+			<if test="holidayUpdateTime != null">
+				 holiday_update_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="holidayId!=null">
+				 #{holidayId},
+			</if>
+			<if test="holidayNo!=null">
+				 #{holidayNo},
+			</if>
+			<if test="holidayUserId!=null">
+				 #{holidayUserId},
+			</if>
+			<if test="holidayTypeId!=null">
+				 #{holidayTypeId},
+			</if>
+			<if test="holidayBz!=null">
+				 #{holidayBz},
+			</if>
+			<if test="holidayStartTime!=null">
+				 #{holidayStartTime},
+			</if>
+			<if test="holidayEndTime!=null">
+				 #{holidayEndTime},
+			</if>
+			<if test="holidayHolidayStatus!=null">
+				 #{holidayHolidayStatus},
+			</if>
+			<if test="holidayShenpiUserId!=null">
+				 #{holidayShenpiUserId},
+			</if>
+			<if test="holidayCreateTime!=null">
+				 #{holidayCreateTime},
+			</if>
+			<if test="holidayUpdateTime!=null">
+				 #{holidayUpdateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Holiday">
+		 UPDATE t_holiday
+ 		 <set> 
+			<if test="holidayNo != null">
+				 holiday_no = #{holidayNo},
+			</if>
+			<if test="holidayUserId != null">
+				 holiday_user_id = #{holidayUserId},
+			</if>
+			<if test="holidayTypeId != null">
+				 holiday_type_id = #{holidayTypeId},
+			</if>
+			<if test="holidayBz != null">
+				 holiday_bz = #{holidayBz},
+			</if>
+			<if test="holidayStartTime != null">
+				 holiday_start_time = #{holidayStartTime},
+			</if>
+			<if test="holidayEndTime != null">
+				 holiday_end_time = #{holidayEndTime},
+			</if>
+			<if test="holidayHolidayStatus != null">
+				 holiday_holiday_status = #{holidayHolidayStatus},
+			</if>
+			<if test="holidayShenpiUserId != null">
+				 holiday_shenpi_user_id = #{holidayShenpiUserId},
+			</if>
+			<if test="holidayCreateTime != null">
+				 holiday_create_time = #{holidayCreateTime},
+			</if>
+			<if test="holidayUpdateTime != null">
+				 holiday_update_time = #{holidayUpdateTime},
+			</if>
+
+ 		 </set>
+		 WHERE holiday_id = #{holidayId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Holiday">
+		 UPDATE t_holiday
+		 SET 
+			 holiday_no = #{holidayNo},
+			 holiday_user_id = #{holidayUserId},
+			 holiday_type_id = #{holidayTypeId},
+			 holiday_bz = #{holidayBz},
+			 holiday_start_time = #{holidayStartTime},
+			 holiday_end_time = #{holidayEndTime},
+			 holiday_holiday_status = #{holidayHolidayStatus},
+			 holiday_shenpi_user_id = #{holidayShenpiUserId},
+			 holiday_create_time = #{holidayCreateTime},
+			 holiday_update_time = #{holidayUpdateTime}
+		 WHERE holiday_id = #{holidayId}
+	</update>
+
+</mapper>

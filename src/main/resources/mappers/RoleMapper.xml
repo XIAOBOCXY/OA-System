@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.RoleMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	role_id,	role_name,	role_create_time
+	</sql>
+
+	<resultMap type="Role" id="baseMap">
+		<result column="role_id" property="roleId"/>
+		<result column="role_name" property="roleName"/>
+		<result column="role_create_time" property="roleCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+		 WHERE role_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllRoles" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectRolesCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectRolesPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectRoleCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_role
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectRolesCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_role
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectRolesByCondition" resultType="Role" parameterType="Role">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+		 <where> 
+			<if test="roleId != null">
+				 and  role_id = #{roleId}
+			</if>
+			<if test="roleName != null">
+				 and  role_name = #{roleName}
+			</if>
+			<if test="roleCreateTime != null">
+				 and  role_create_time = #{roleCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_role
+		 WHERE role_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Role">
+		 DELETE FROM t_role
+		 <where> 
+			<if test="roleId != null">
+				 and  role_id = #{roleId}
+			</if>
+			<if test="roleName != null">
+				 and  role_name = #{roleName}
+			</if>
+			<if test="roleCreateTime != null">
+				 and  role_create_time = #{roleCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Role">
+		 INSERT INTO t_role
+ 		(role_id,role_name,role_create_time) 
+		 VALUES 
+ 		(#{roleId},#{roleName},#{roleCreateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Role">
+		 INSERT INTO t_role
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="roleId != null">
+				 role_id,
+			</if>
+			<if test="roleName != null">
+				 role_name,
+			</if>
+			<if test="roleCreateTime != null">
+				 role_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="roleId!=null">
+				 #{roleId},
+			</if>
+			<if test="roleName!=null">
+				 #{roleName},
+			</if>
+			<if test="roleCreateTime!=null">
+				 #{roleCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Role">
+		 UPDATE t_role
+ 		 <set> 
+			<if test="roleName != null">
+				 role_name = #{roleName},
+			</if>
+			<if test="roleCreateTime != null">
+				 role_create_time = #{roleCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE role_id = #{roleId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Role">
+		 UPDATE t_role
+		 SET 
+			 role_name = #{roleName},
+			 role_create_time = #{roleCreateTime}
+		 WHERE role_id = #{roleId}
+	</update>
+
+</mapper>

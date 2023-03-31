@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.DeptMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	dept_id,	dept_no,	dept_name,	dept_pid,	dept_user,	dept_address
+	</sql>
+
+	<resultMap type="Dept" id="baseMap">
+		<result column="dept_id" property="deptId"/>
+		<result column="dept_no" property="deptNo"/>
+		<result column="dept_name" property="deptName"/>
+		<result column="dept_pid" property="deptPid"/>
+		<result column="dept_user" property="deptUser"/>
+		<result column="dept_address" property="deptAddress"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_dept
+		 WHERE dept_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllDepts" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_dept
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectDeptsCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_dept
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectDeptsPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_dept
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectDeptCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_dept
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectDeptsCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_dept
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectDeptsByCondition" resultType="Dept" parameterType="Dept">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_dept
+		 <where> 
+			<if test="deptId != null">
+				 and  dept_id = #{deptId}
+			</if>
+			<if test="deptNo != null">
+				 and  dept_no = #{deptNo}
+			</if>
+			<if test="deptName != null">
+				 and  dept_name = #{deptName}
+			</if>
+			<if test="deptPid != null">
+				 and  dept_pid = #{deptPid}
+			</if>
+			<if test="deptUser != null">
+				 and  dept_user = #{deptUser}
+			</if>
+			<if test="deptAddress != null">
+				 and  dept_address = #{deptAddress}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_dept
+		 WHERE dept_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Dept">
+		 DELETE FROM t_dept
+		 <where> 
+			<if test="deptId != null">
+				 and  dept_id = #{deptId}
+			</if>
+			<if test="deptNo != null">
+				 and  dept_no = #{deptNo}
+			</if>
+			<if test="deptName != null">
+				 and  dept_name = #{deptName}
+			</if>
+			<if test="deptPid != null">
+				 and  dept_pid = #{deptPid}
+			</if>
+			<if test="deptUser != null">
+				 and  dept_user = #{deptUser}
+			</if>
+			<if test="deptAddress != null">
+				 and  dept_address = #{deptAddress}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Dept">
+		 INSERT INTO t_dept
+ 		(dept_id,dept_no,dept_name,dept_pid,dept_user,dept_address) 
+		 VALUES 
+ 		(#{deptId},#{deptNo},#{deptName},#{deptPid},#{deptUser},#{deptAddress}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Dept">
+		 INSERT INTO t_dept
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="deptId != null">
+				 dept_id,
+			</if>
+			<if test="deptNo != null">
+				 dept_no,
+			</if>
+			<if test="deptName != null">
+				 dept_name,
+			</if>
+			<if test="deptPid != null">
+				 dept_pid,
+			</if>
+			<if test="deptUser != null">
+				 dept_user,
+			</if>
+			<if test="deptAddress != null">
+				 dept_address,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="deptId!=null">
+				 #{deptId},
+			</if>
+			<if test="deptNo!=null">
+				 #{deptNo},
+			</if>
+			<if test="deptName!=null">
+				 #{deptName},
+			</if>
+			<if test="deptPid!=null">
+				 #{deptPid},
+			</if>
+			<if test="deptUser!=null">
+				 #{deptUser},
+			</if>
+			<if test="deptAddress!=null">
+				 #{deptAddress},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Dept">
+		 UPDATE t_dept
+ 		 <set> 
+			<if test="deptNo != null">
+				 dept_no = #{deptNo},
+			</if>
+			<if test="deptName != null">
+				 dept_name = #{deptName},
+			</if>
+			<if test="deptPid != null">
+				 dept_pid = #{deptPid},
+			</if>
+			<if test="deptUser != null">
+				 dept_user = #{deptUser},
+			</if>
+			<if test="deptAddress != null">
+				 dept_address = #{deptAddress},
+			</if>
+
+ 		 </set>
+		 WHERE dept_id = #{deptId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Dept">
+		 UPDATE t_dept
+		 SET 
+			 dept_no = #{deptNo},
+			 dept_name = #{deptName},
+			 dept_pid = #{deptPid},
+			 dept_user = #{deptUser},
+			 dept_address = #{deptAddress}
+		 WHERE dept_id = #{deptId}
+	</update>
+
+</mapper>

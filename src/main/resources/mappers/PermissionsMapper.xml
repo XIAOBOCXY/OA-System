@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.PermissionsMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	permissions_id,	permissions_role_id,	permissions_menu_id,	permissions_create_time
+	</sql>
+
+	<resultMap type="Permissions" id="baseMap">
+		<result column="permissions_id" property="permissionsId"/>
+		<result column="permissions_role_id" property="permissionsRoleId"/>
+		<result column="permissions_menu_id" property="permissionsMenuId"/>
+		<result column="permissions_create_time" property="permissionsCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_permissions
+		 WHERE permissions_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllPermissionss" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_permissions
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectPermissionssCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_permissions
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectPermissionssPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_permissions
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectPermissionsCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_permissions
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectPermissionssCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_permissions
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectPermissionssByCondition" resultType="Permissions" parameterType="Permissions">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_permissions
+		 <where> 
+			<if test="permissionsId != null">
+				 and  permissions_id = #{permissionsId}
+			</if>
+			<if test="permissionsRoleId != null">
+				 and  permissions_role_id = #{permissionsRoleId}
+			</if>
+			<if test="permissionsMenuId != null">
+				 and  permissions_menu_id = #{permissionsMenuId}
+			</if>
+			<if test="permissionsCreateTime != null">
+				 and  permissions_create_time = #{permissionsCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_permissions
+		 WHERE permissions_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Permissions">
+		 DELETE FROM t_permissions
+		 <where> 
+			<if test="permissionsId != null">
+				 and  permissions_id = #{permissionsId}
+			</if>
+			<if test="permissionsRoleId != null">
+				 and  permissions_role_id = #{permissionsRoleId}
+			</if>
+			<if test="permissionsMenuId != null">
+				 and  permissions_menu_id = #{permissionsMenuId}
+			</if>
+			<if test="permissionsCreateTime != null">
+				 and  permissions_create_time = #{permissionsCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Permissions">
+		 INSERT INTO t_permissions
+ 		(permissions_id,permissions_role_id,permissions_menu_id,permissions_create_time) 
+		 VALUES 
+ 		(#{permissionsId},#{permissionsRoleId},#{permissionsMenuId},#{permissionsCreateTime}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Permissions">
+		 INSERT INTO t_permissions
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="permissionsId != null">
+				 permissions_id,
+			</if>
+			<if test="permissionsRoleId != null">
+				 permissions_role_id,
+			</if>
+			<if test="permissionsMenuId != null">
+				 permissions_menu_id,
+			</if>
+			<if test="permissionsCreateTime != null">
+				 permissions_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="permissionsId!=null">
+				 #{permissionsId},
+			</if>
+			<if test="permissionsRoleId!=null">
+				 #{permissionsRoleId},
+			</if>
+			<if test="permissionsMenuId!=null">
+				 #{permissionsMenuId},
+			</if>
+			<if test="permissionsCreateTime!=null">
+				 #{permissionsCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Permissions">
+		 UPDATE t_permissions
+ 		 <set> 
+			<if test="permissionsRoleId != null">
+				 permissions_role_id = #{permissionsRoleId},
+			</if>
+			<if test="permissionsMenuId != null">
+				 permissions_menu_id = #{permissionsMenuId},
+			</if>
+			<if test="permissionsCreateTime != null">
+				 permissions_create_time = #{permissionsCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE permissions_id = #{permissionsId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Permissions">
+		 UPDATE t_permissions
+		 SET 
+			 permissions_role_id = #{permissionsRoleId},
+			 permissions_menu_id = #{permissionsMenuId},
+			 permissions_create_time = #{permissionsCreateTime}
+		 WHERE permissions_id = #{permissionsId}
+	</update>
+
+</mapper>

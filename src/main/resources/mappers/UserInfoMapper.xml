@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.UserInfoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	user_info_id,	user_info_no,	user_name,	user_dept_id,	user_info_sex,	user_info_education,	user_info_email,	user_info_phone,	user_info_entry_time,	user_info_create_time
+	</sql>
+
+	<resultMap type="UserInfo" id="baseMap">
+		<result column="user_info_id" property="userInfoId"/>
+		<result column="user_info_no" property="userInfoNo"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_dept_id" property="userDeptId"/>
+		<result column="user_info_sex" property="userInfoSex"/>
+		<result column="user_info_education" property="userInfoEducation"/>
+		<result column="user_info_email" property="userInfoEmail"/>
+		<result column="user_info_phone" property="userInfoPhone"/>
+		<result column="user_info_entry_time" property="userInfoEntryTime"/>
+		<result column="user_info_create_time" property="userInfoCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_info
+		 WHERE user_info_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllUserInfos" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_info
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectUserInfosCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_info
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectUserInfosPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_info
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectUserInfoCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_user_info
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectUserInfosCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_user_info
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectUserInfosByCondition" resultType="UserInfo" parameterType="UserInfo">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_info
+		 <where> 
+			<if test="userInfoId != null">
+				 and  user_info_id = #{userInfoId}
+			</if>
+			<if test="userInfoNo != null">
+				 and  user_info_no = #{userInfoNo}
+			</if>
+			<if test="userName != null">
+				 and  user_name like concat('%',#{userName},'%')
+			</if>
+			<if test="userDeptId != null">
+				 and  user_dept_id = #{userDeptId}
+			</if>
+			<if test="userInfoSex != null">
+				 and  user_info_sex = #{userInfoSex}
+			</if>
+			<if test="userInfoEducation != null">
+				 and  user_info_education = #{userInfoEducation}
+			</if>
+			<if test="userInfoEmail != null">
+				 and  user_info_email = #{userInfoEmail}
+			</if>
+			<if test="userInfoPhone != null">
+				 and  user_info_phone = #{userInfoPhone}
+			</if>
+			<if test="userInfoEntryTime != null">
+				 and  user_info_entry_time = #{userInfoEntryTime}
+			</if>
+			<if test="userInfoCreateTime != null">
+				 and  user_info_create_time = #{userInfoCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_user_info
+		 WHERE user_info_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="UserInfo">
+		 DELETE FROM t_user_info
+		 <where> 
+			<if test="userInfoId != null">
+				 and  user_info_id = #{userInfoId}
+			</if>
+			<if test="userInfoNo != null">
+				 and  user_info_no = #{userInfoNo}
+			</if>
+			<if test="userName != null">
+				 and  user_name = #{userName}
+			</if>
+			<if test="userDeptId != null">
+				 and  user_dept_id = #{userDeptId}
+			</if>
+			<if test="userInfoSex != null">
+				 and  user_info_sex = #{userInfoSex}
+			</if>
+			<if test="userInfoEducation != null">
+				 and  user_info_education = #{userInfoEducation}
+			</if>
+			<if test="userInfoEmail != null">
+				 and  user_info_email = #{userInfoEmail}
+			</if>
+			<if test="userInfoPhone != null">
+				 and  user_info_phone = #{userInfoPhone}
+			</if>
+			<if test="userInfoEntryTime != null">
+				 and  user_info_entry_time = #{userInfoEntryTime}
+			</if>
+			<if test="userInfoCreateTime != null">
+				 and  user_info_create_time = #{userInfoCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="UserInfo" keyColumn="user_info_id" useGeneratedKeys="true" keyProperty="userInfoId">
+		 INSERT INTO t_user_info
+ 		(user_info_id,user_info_no,user_name,user_dept_id,user_info_sex,user_info_education,user_info_email,user_info_phone,user_info_entry_time,user_info_create_time)
+		 VALUES
+ 		(null,#{userInfoNo},#{userName},#{userDeptId},#{userInfoSex},#{userInfoEducation},#{userInfoEmail},#{userInfoPhone},#{userInfoEntryTime},now())
+	</insert>
+	<!-- 添加 -->
+	<insert id="insert2" parameterType="UserInfo" keyColumn="user_info_id" useGeneratedKeys="true" keyProperty="userInfoId">
+		 INSERT INTO t_user_info
+ 		(user_info_id,user_info_no,user_info_entry_time,user_info_create_time)
+		 VALUES
+ 		(null,#{userInfoNo},now(),now())
+	</insert>
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="UserInfo">
+		 INSERT INTO t_user_info
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="userInfoId != null">
+				 user_info_id,
+			</if>
+			<if test="userInfoNo != null">
+				 user_info_no,
+			</if>
+			<if test="userName != null">
+				 user_name,
+			</if>
+			<if test="userDeptId != null">
+				 user_dept_id,
+			</if>
+			<if test="userInfoSex != null">
+				 user_info_sex,
+			</if>
+			<if test="userInfoEducation != null">
+				 user_info_education,
+			</if>
+			<if test="userInfoEmail != null">
+				 user_info_email,
+			</if>
+			<if test="userInfoPhone != null">
+				 user_info_phone,
+			</if>
+			<if test="userInfoEntryTime != null">
+				 user_info_entry_time,
+			</if>
+			<if test="userInfoCreateTime != null">
+				 user_info_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="userInfoId!=null">
+				 #{userInfoId},
+			</if>
+			<if test="userInfoNo!=null">
+				 #{userInfoNo},
+			</if>
+			<if test="userName!=null">
+				 #{userName},
+			</if>
+			<if test="userDeptId!=null">
+				 #{userDeptId},
+			</if>
+			<if test="userInfoSex!=null">
+				 #{userInfoSex},
+			</if>
+			<if test="userInfoEducation!=null">
+				 #{userInfoEducation},
+			</if>
+			<if test="userInfoEmail!=null">
+				 #{userInfoEmail},
+			</if>
+			<if test="userInfoPhone!=null">
+				 #{userInfoPhone},
+			</if>
+			<if test="userInfoEntryTime!=null">
+				 #{userInfoEntryTime},
+			</if>
+			<if test="userInfoCreateTime!=null">
+				 #{userInfoCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="UserInfo">
+		 UPDATE t_user_info
+ 		 <set> 
+			<if test="userInfoNo != null">
+				 user_info_no = #{userInfoNo},
+			</if>
+			<if test="userName != null">
+				 user_name = #{userName},
+			</if>
+			<if test="userDeptId != null">
+				 user_dept_id = #{userDeptId},
+			</if>
+			<if test="userInfoSex != null">
+				 user_info_sex = #{userInfoSex},
+			</if>
+			<if test="userInfoEducation != null">
+				 user_info_education = #{userInfoEducation},
+			</if>
+			<if test="userInfoEmail != null">
+				 user_info_email = #{userInfoEmail},
+			</if>
+			<if test="userInfoPhone != null">
+				 user_info_phone = #{userInfoPhone},
+			</if>
+			<if test="userInfoEntryTime != null">
+				 user_info_entry_time = #{userInfoEntryTime},
+			</if>
+			<if test="userInfoCreateTime != null">
+				 user_info_create_time = #{userInfoCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE user_info_id = #{userInfoId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="UserInfo">
+		 UPDATE t_user_info
+		 SET 
+			 user_info_no = #{userInfoNo},
+			 user_name = #{userName},
+			 user_dept_id = #{userDeptId},
+			 user_info_sex = #{userInfoSex},
+			 user_info_education = #{userInfoEducation},
+			 user_info_email = #{userInfoEmail},
+			 user_info_phone = #{userInfoPhone},
+			 user_info_entry_time = #{userInfoEntryTime},
+			 user_info_create_time = #{userInfoCreateTime}
+		 WHERE user_info_id = #{userInfoId}
+	</update>
+
+</mapper>

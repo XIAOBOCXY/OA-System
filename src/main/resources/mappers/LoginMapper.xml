@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.LoginMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	login_id,	login_account,	login_pwd,	login_salt,	login_index,	login_status,	login_error,	login_user_id,	login_role_id,	login_create_time
+	</sql>
+
+	<resultMap type="Login" id="baseMap">
+		<result column="login_id" property="loginId"/>
+		<result column="login_account" property="loginAccount"/>
+		<result column="login_pwd" property="loginPwd"/>
+		<result column="login_salt" property="loginSalt"/>
+		<result column="login_index" property="loginIndex"/>
+		<result column="login_status" property="loginStatus"/>
+		<result column="login_error" property="loginError"/>
+		<result column="login_user_id" property="loginUserId"/>
+		<result column="login_role_id" property="loginRoleId"/>
+		<result column="login_create_time" property="loginCreateTime"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_login
+		 WHERE login_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllLogins" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_login
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectLoginsCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_login
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectLoginsPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_login
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectLoginCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_login
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectLoginsCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_login
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectLoginsByCondition" resultType="Login" parameterType="Login">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_login
+		 <where> 
+			<if test="loginId != null">
+				 and  login_id = #{loginId}
+			</if>
+			<if test="loginAccount != null">
+				 and  login_account = #{loginAccount}
+			</if>
+			<if test="loginPwd != null">
+				 and  login_pwd = #{loginPwd}
+			</if>
+			<if test="loginSalt != null">
+				 and  login_salt = #{loginSalt}
+			</if>
+			<if test="loginIndex != null">
+				 and  login_index = #{loginIndex}
+			</if>
+			<if test="loginStatus != null">
+				 and  login_status = #{loginStatus}
+			</if>
+			<if test="loginError != null">
+				 and  login_error = #{loginError}
+			</if>
+			<if test="loginUserId != null">
+				 and  login_user_id = #{loginUserId}
+			</if>
+			<if test="loginRoleId != null">
+				 and  login_role_id = #{loginRoleId}
+			</if>
+			<if test="loginCreateTime != null">
+				 and  login_create_time = #{loginCreateTime}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_login
+		 WHERE login_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Login">
+		 DELETE FROM t_login
+		 <where> 
+			<if test="loginId != null">
+				 and  login_id = #{loginId}
+			</if>
+			<if test="loginAccount != null">
+				 and  login_account = #{loginAccount}
+			</if>
+			<if test="loginPwd != null">
+				 and  login_pwd = #{loginPwd}
+			</if>
+			<if test="loginSalt != null">
+				 and  login_salt = #{loginSalt}
+			</if>
+			<if test="loginIndex != null">
+				 and  login_index = #{loginIndex}
+			</if>
+			<if test="loginStatus != null">
+				 and  login_status = #{loginStatus}
+			</if>
+			<if test="loginError != null">
+				 and  login_error = #{loginError}
+			</if>
+			<if test="loginUserId != null">
+				 and  login_user_id = #{loginUserId}
+			</if>
+			<if test="loginRoleId != null">
+				 and  login_role_id = #{loginRoleId}
+			</if>
+			<if test="loginCreateTime != null">
+				 and  login_create_time = #{loginCreateTime}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Login"  useGeneratedKeys="true" keyProperty="loginId" keyColumn="login_id">
+		 INSERT INTO t_login
+ 		(login_id,login_account,login_pwd,login_salt,login_index,login_status,login_error,login_user_id,login_role_id,login_create_time) 
+		 VALUES 
+ 		(null,#{loginAccount},#{loginPwd},#{loginSalt},#{loginIndex},#{loginStatus},#{loginError},#{loginUserId},#{loginRoleId},now())
+	</insert>
+	<!-- 添加 -->
+	<insert id="insert2" parameterType="Login" useGeneratedKeys="true" keyProperty="loginId" keyColumn="login_id">
+		 INSERT INTO t_login
+ 		(login_id,login_account,login_pwd,login_salt,login_index,login_status,login_error,login_user_id,login_role_id,login_create_time)
+		 VALUES
+ 		(null,#{loginAccount},#{loginPwd},#{loginSalt},#{loginIndex},0,0,#{loginUserId},null,now())
+	</insert>
+
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Login">
+		 INSERT INTO t_login
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="loginId != null">
+				 login_id,
+			</if>
+			<if test="loginAccount != null">
+				 login_account,
+			</if>
+			<if test="loginPwd != null">
+				 login_pwd,
+			</if>
+			<if test="loginSalt != null">
+				 login_salt,
+			</if>
+			<if test="loginIndex != null">
+				 login_index,
+			</if>
+			<if test="loginStatus != null">
+				 login_status,
+			</if>
+			<if test="loginError != null">
+				 login_error,
+			</if>
+			<if test="loginUserId != null">
+				 login_user_id,
+			</if>
+			<if test="loginRoleId != null">
+				 login_role_id,
+			</if>
+			<if test="loginCreateTime != null">
+				 login_create_time,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="loginId!=null">
+				 #{loginId},
+			</if>
+			<if test="loginAccount!=null">
+				 #{loginAccount},
+			</if>
+			<if test="loginPwd!=null">
+				 #{loginPwd},
+			</if>
+			<if test="loginSalt!=null">
+				 #{loginSalt},
+			</if>
+			<if test="loginIndex!=null">
+				 #{loginIndex},
+			</if>
+			<if test="loginStatus!=null">
+				 #{loginStatus},
+			</if>
+			<if test="loginError!=null">
+				 #{loginError},
+			</if>
+			<if test="loginUserId!=null">
+				 #{loginUserId},
+			</if>
+			<if test="loginRoleId!=null">
+				 #{loginRoleId},
+			</if>
+			<if test="loginCreateTime!=null">
+				 #{loginCreateTime},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Login">
+		 UPDATE t_login
+ 		 <set> 
+			<if test="loginAccount != null">
+				 login_account = #{loginAccount},
+			</if>
+			<if test="loginPwd != null">
+				 login_pwd = #{loginPwd},
+			</if>
+			<if test="loginSalt != null">
+				 login_salt = #{loginSalt},
+			</if>
+			<if test="loginIndex != null">
+				 login_index = #{loginIndex},
+			</if>
+			<if test="loginStatus != null">
+				 login_status = #{loginStatus},
+			</if>
+			<if test="loginError != null">
+				 login_error = #{loginError},
+			</if>
+			<if test="loginUserId != null">
+				 login_user_id = #{loginUserId},
+			</if>
+			<if test="loginRoleId != null">
+				 login_role_id = #{loginRoleId},
+			</if>
+			<if test="loginCreateTime != null">
+				 login_create_time = #{loginCreateTime},
+			</if>
+
+ 		 </set>
+		 WHERE login_id = #{loginId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Login">
+		 UPDATE t_login
+		 SET 
+			 login_account = #{loginAccount},
+			 login_pwd = #{loginPwd},
+			 login_salt = #{loginSalt},
+			 login_index = #{loginIndex},
+			 login_status = #{loginStatus},
+			 login_error = #{loginError},
+			 login_user_id = #{loginUserId},
+			 login_role_id = #{loginRoleId},
+			 login_create_time = #{loginCreateTime}
+		 WHERE login_id = #{loginId}
+	</update>
+
+</mapper>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oa01.mapper.BaoxiaoMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	baoxiao_id,	baoxiao_no,	baoxiao_user_id,	baoxiao_type,	baoxiao_test,	baoxiao_money,	baoxiao_create_time,	baoxiao_status
+	</sql>
+
+	<resultMap type="Baoxiao" id="baseMap">
+		<result column="baoxiao_id" property="baoxiaoId"/>
+		<result column="baoxiao_no" property="baoxiaoNo"/>
+		<result column="baoxiao_user_id" property="baoxiaoUserId"/>
+		<result column="baoxiao_type" property="baoxiaoType"/>
+		<result column="baoxiao_test" property="baoxiaoTest"/>
+		<result column="baoxiao_money" property="baoxiaoMoney"/>
+		<result column="baoxiao_create_time" property="baoxiaoCreateTime"/>
+		<result column="baoxiao_status" property="baoxiaoStatus"/>
+	</resultMap>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="baseMap" parameterType="java.lang.Integer">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_baoxiao
+		 WHERE baoxiao_id = #{id}
+	</select>
+
+	<!-- 查询表中所有信息 -->
+	<select id="selectAllBaoxiaos" resultMap="baseMap">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_baoxiao
+	</select>
+
+	<!-- 查询Map符合条件的全部信息  -->
+	<select id="selectBaoxiaosCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_baoxiao
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 查询Map符合条件的分页信息  -->
+	<select id="selectBaoxiaosPerPageByCondition" resultMap="baseMap" parameterType="map">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_baoxiao
+	<!-- 条件自己写  -->
+		 limit ${start},#{size}
+	</select>
+
+	<!-- 查询所有获得记录条数 -->
+	<select id="selectBaoxiaoCount" resultType="java.lang.Integer">
+		 SELECT
+		 count(1)
+		 FROM t_baoxiao
+	</select>
+
+	<!-- 查询Map符合条件记录条数 -->
+	<select id="selectBaoxiaosCountByCondition" resultType="java.lang.Integer"  parameterType="map" >
+		 SELECT
+		 count(1)
+		 FROM t_baoxiao
+	<!-- 条件自己写  -->
+	</select>
+
+	<!-- 根据Bean条件查询匹配信息 -->
+	<select id="selectBaoxiaosByCondition" resultType="Baoxiao" parameterType="Baoxiao">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_baoxiao
+		 <where> 
+			<if test="baoxiaoId != null">
+				 and  baoxiao_id = #{baoxiaoId}
+			</if>
+			<if test="baoxiaoNo != null">
+				 and  baoxiao_no = #{baoxiaoNo}
+			</if>
+			<if test="baoxiaoUserId != null">
+				 and  baoxiao_user_id = #{baoxiaoUserId}
+			</if>
+			<if test="baoxiaoType != null">
+				 and  baoxiao_type = #{baoxiaoType}
+			</if>
+			<if test="baoxiaoTest != null">
+				 and  baoxiao_test = #{baoxiaoTest}
+			</if>
+			<if test="baoxiaoMoney != null">
+				 and  baoxiao_money = #{baoxiaoMoney}
+			</if>
+			<if test="baoxiaoCreateTime != null">
+				 and  baoxiao_create_time = #{baoxiaoCreateTime}
+			</if>
+			<if test="baoxiaoStatus != null">
+				 and  baoxiao_status = #{baoxiaoStatus}
+			</if>
+		 </where> 
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		 DELETE FROM t_baoxiao
+		 WHERE baoxiao_id = #{id}
+	</delete>
+
+	<!-- 删除：根据传入的对象内容，条件删除  -->
+	<delete id="deleteByCondition" parameterType="Baoxiao">
+		 DELETE FROM t_baoxiao
+		 <where> 
+			<if test="baoxiaoId != null">
+				 and  baoxiao_id = #{baoxiaoId}
+			</if>
+			<if test="baoxiaoNo != null">
+				 and  baoxiao_no = #{baoxiaoNo}
+			</if>
+			<if test="baoxiaoUserId != null">
+				 and  baoxiao_user_id = #{baoxiaoUserId}
+			</if>
+			<if test="baoxiaoType != null">
+				 and  baoxiao_type = #{baoxiaoType}
+			</if>
+			<if test="baoxiaoTest != null">
+				 and  baoxiao_test = #{baoxiaoTest}
+			</if>
+			<if test="baoxiaoMoney != null">
+				 and  baoxiao_money = #{baoxiaoMoney}
+			</if>
+			<if test="baoxiaoCreateTime != null">
+				 and  baoxiao_create_time = #{baoxiaoCreateTime}
+			</if>
+			<if test="baoxiaoStatus != null">
+				 and  baoxiao_status = #{baoxiaoStatus}
+			</if>
+		 </where> 
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="Baoxiao">
+		 INSERT INTO t_baoxiao
+ 		(baoxiao_id,baoxiao_no,baoxiao_user_id,baoxiao_type,baoxiao_test,baoxiao_money,baoxiao_create_time,baoxiao_status) 
+		 VALUES 
+ 		(#{baoxiaoId},#{baoxiaoNo},#{baoxiaoUserId},#{baoxiaoType},#{baoxiaoTest},#{baoxiaoMoney},#{baoxiaoCreateTime},#{baoxiaoStatus}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="Baoxiao">
+		 INSERT INTO t_baoxiao
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="baoxiaoId != null">
+				 baoxiao_id,
+			</if>
+			<if test="baoxiaoNo != null">
+				 baoxiao_no,
+			</if>
+			<if test="baoxiaoUserId != null">
+				 baoxiao_user_id,
+			</if>
+			<if test="baoxiaoType != null">
+				 baoxiao_type,
+			</if>
+			<if test="baoxiaoTest != null">
+				 baoxiao_test,
+			</if>
+			<if test="baoxiaoMoney != null">
+				 baoxiao_money,
+			</if>
+			<if test="baoxiaoCreateTime != null">
+				 baoxiao_create_time,
+			</if>
+			<if test="baoxiaoStatus != null">
+				 baoxiao_status,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="baoxiaoId!=null">
+				 #{baoxiaoId},
+			</if>
+			<if test="baoxiaoNo!=null">
+				 #{baoxiaoNo},
+			</if>
+			<if test="baoxiaoUserId!=null">
+				 #{baoxiaoUserId},
+			</if>
+			<if test="baoxiaoType!=null">
+				 #{baoxiaoType},
+			</if>
+			<if test="baoxiaoTest!=null">
+				 #{baoxiaoTest},
+			</if>
+			<if test="baoxiaoMoney!=null">
+				 #{baoxiaoMoney},
+			</if>
+			<if test="baoxiaoCreateTime!=null">
+				 #{baoxiaoCreateTime},
+			</if>
+			<if test="baoxiaoStatus!=null">
+				 #{baoxiaoStatus},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="Baoxiao">
+		 UPDATE t_baoxiao
+ 		 <set> 
+			<if test="baoxiaoNo != null">
+				 baoxiao_no = #{baoxiaoNo},
+			</if>
+			<if test="baoxiaoUserId != null">
+				 baoxiao_user_id = #{baoxiaoUserId},
+			</if>
+			<if test="baoxiaoType != null">
+				 baoxiao_type = #{baoxiaoType},
+			</if>
+			<if test="baoxiaoTest != null">
+				 baoxiao_test = #{baoxiaoTest},
+			</if>
+			<if test="baoxiaoMoney != null">
+				 baoxiao_money = #{baoxiaoMoney},
+			</if>
+			<if test="baoxiaoCreateTime != null">
+				 baoxiao_create_time = #{baoxiaoCreateTime},
+			</if>
+			<if test="baoxiaoStatus != null">
+				 baoxiao_status = #{baoxiaoStatus},
+			</if>
+
+ 		 </set>
+		 WHERE baoxiao_id = #{baoxiaoId}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="Baoxiao">
+		 UPDATE t_baoxiao
+		 SET 
+			 baoxiao_no = #{baoxiaoNo},
+			 baoxiao_user_id = #{baoxiaoUserId},
+			 baoxiao_type = #{baoxiaoType},
+			 baoxiao_test = #{baoxiaoTest},
+			 baoxiao_money = #{baoxiaoMoney},
+			 baoxiao_create_time = #{baoxiaoCreateTime},
+			 baoxiao_status = #{baoxiaoStatus}
+		 WHERE baoxiao_id = #{baoxiaoId}
+	</update>
+
+</mapper>
